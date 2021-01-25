@@ -199,7 +199,7 @@ class Environment():
 
         rocket.check_collision(self.width, self.height, self.barriers)
         rocket.check_reached_target(self.target)
-        rocket.update(self.target)
+        rocket.update()
         if rocket.alive:
           rocket.display(self.screen)
 
