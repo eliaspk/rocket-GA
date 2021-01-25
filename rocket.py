@@ -111,7 +111,6 @@ class Rocket:
       Main display of our environment
     """
     screen.blit(self.rotate_surface, self.pos)
-    screen.blit(self.img_surface, self.pos)
 
   def check_collision(self, width, height, barriers):
     """ Collision detection of rocket. Not optimal.
