@@ -24,4 +24,4 @@ if __name__ == "__main__":
   env.run()
 ```
 
-This project is also available on [repl.it](https://repl.it/@eliaspk/Pygame-Genetic-Algorithm#main.py) Be sure to expand the pygame window to an appropriate size. Also it does have some lag when run on replit, compared to my local machine which experiences no lag at all.
+This project is also available on [repl.it](https://replit.com/@eliaspk/rocket-GA), but I recommend running locally due to lag on replit. Be sure to expand the pygame window to an appropriate size when using replit.
