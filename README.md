@@ -20,8 +20,6 @@ if __name__ == "__main__":
   height = 600
   pop_size = 50
 
-  env = Environment(width, height, 50)
+  env = Environment(width, height, pop_size)
   env.run()
 ```
-
-This project is also available on [repl.it](https://repl.it/@eliaspk/Pygame-Genetic-Algorithm#main.py) Be sure to expand the pygame window to an appropriate size. Also it does have some lag when run on replit, compared to my local machine which experiences no lag at all.
