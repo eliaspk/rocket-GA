@@ -1,6 +1,7 @@
 import pygame
 import sys
 
+from pygame import Vector2, Rect
 from population import Population
 
 PRIMARY_FONT_SIZE = 32
@@ -59,17 +60,12 @@ class Environment():
     self.target = None
 
   def create_barriers(self):
-    """ Contains loop that allows the user to click and drag to create rectangles. Due to pygame API, the first click the
-    user makes represents the top left point of the rectangle. Thus the rectangle will invert when user drags their mouse 
-    above or to the left of their initial click.
-    """
     drawing = False
     start_pos = None
 
     # Draw rectangles loop
     while(True):
       self.screen.fill(BLACK)
-
       self.draw_barriers()
       self.population.rockets[0].display(self.screen)
 
@@ -89,32 +85,37 @@ class Environment():
         if event.type == pygame.QUIT:
           pygame.quit()
           sys.exit()
-        if event.type == pygame.MOUSEBUTTONDOWN:
-          start_pos = event.pos
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+          start_pos = Vector2(event.pos)
           drawing = True
-        if event.type == pygame.KEYDOWN:
+        elif event.type == pygame.MOUSEBUTTONUP:
+          if drawing:
+            end_pos = Vector2(event.pos)
+            rect = self.create_rect(start_pos, end_pos)
+            self.barriers.append(rect)
+            drawing = False
+            start_pos = False
+        elif event.type == pygame.KEYDOWN:
           if event.key == pygame.K_SPACE:
             return
           elif event.key == pygame.K_u:
             self.barriers.pop()
 
-      rect = None
       if drawing and start_pos:
-        current_pos = pygame.mouse.get_pos()
-        top_left_x = min(start_pos[0], current_pos[0])
-        top_left_y = min(start_pos[1], current_pos[1])
-        width = abs(current_pos[0] - start_pos[0])
-        height = abs(current_pos[1] - start_pos[1])
-        pygame.draw.rect(self.screen, WHITE, (top_left_x, top_left_y, width, height))
-        rect = pygame.Rect(top_left_x, top_left_y, width, height)
-
-      if event.type == pygame.MOUSEBUTTONUP:
-        drawing = False
-        start_pos = None
-        if rect:  
-          self.barriers.append(rect)
+        current_pos = Vector2(pygame.mouse.get_pos())
+        rect = self.create_rect(start_pos, current_pos)
+        pygame.draw.rect(self.screen, WHITE, rect, 1)
         
       self.update()
+
+  @staticmethod
+  def create_rect(start: Vector2, end: Vector2) -> Rect:
+    return Rect(
+      min(start.x, end.x),
+      min(start.y, end.y),
+      abs(end.x - start.x),
+      abs(end.y - start.y)
+    )
 
   def place_target(self):
     """ Contains a loop that allows the user to place a target anywhere by clicking once on the screen.
